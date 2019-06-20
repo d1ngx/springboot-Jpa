@@ -21,7 +21,14 @@ public class AlienController {
 	public String home() {
 		return "home.jsp";
 	}
-	
+
+	@DeleteMapping("alien/{aid}")
+	public  String deleteAlien(@PathVariable int aid){
+	    Alien alien = repo.getOne(aid);
+	    repo.delete(alien);
+	    return  "done";
+    }
+
 	@PostMapping(path = "/alien",consumes = {"application/json"})
 	public Alien addAlien(@RequestBody Alien alien) {
 		repo.save(alien);
@@ -45,6 +52,12 @@ public class AlienController {
 	public List<Alien> getAliens() {
 		return repo.findAll();
 	}
+
+    @PutMapping(path = "/alien",consumes = {"application/json"})
+    public Alien saveOrUpdateAlien(@RequestBody Alien alien) {
+        repo.save(alien);
+        return alien;
+    }
 
 	@RequestMapping("/alien/{aid}")
 	@ResponseBody
