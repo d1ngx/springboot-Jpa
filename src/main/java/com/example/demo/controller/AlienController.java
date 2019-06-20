@@ -2,19 +2,16 @@ package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.dao.AlienRepo;
 import com.example.demo.model.Alien;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 public class AlienController {
 
 	@Autowired
@@ -25,10 +22,10 @@ public class AlienController {
 		return "home.jsp";
 	}
 	
-	@RequestMapping("/addAlien")
-	public String addAlien(Alien alien) {
+	@PostMapping(path = "/alien",consumes = {"application/json"})
+	public Alien addAlien(@RequestBody Alien alien) {
 		repo.save(alien);
-		return "home.jsp";
+		return alien;
 	}
 
 	@RequestMapping("/getAlien")
@@ -43,8 +40,8 @@ public class AlienController {
 		return mv;
 	}
 
-	@RequestMapping(path = "/aliens",produces = {"application/xml"})
-	@ResponseBody
+	@GetMapping("/aliens")
+	//@ResponseBody
 	public List<Alien> getAliens() {
 		return repo.findAll();
 	}
