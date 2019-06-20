@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+import java.util.Optional;
+
 @Controller
 public class AlienController {
 
@@ -33,22 +36,22 @@ public class AlienController {
 		ModelAndView mv = new ModelAndView("showAlien.jsp");
 		Alien alien = repo.findById(aid).orElse(new Alien());
 
-		System.out.println(repo.findByLang("Java"));
+		/*System.out.println(repo.findByLang("Java"));
 		System.out.println(repo.findByAidGreaterThan(102));
-		System.out.println(repo.findByLangSorted("Java"));
+		System.out.println(repo.findByLangSorted("Java"));*/
 		mv.addObject(alien);
 		return mv;
 	}
 
 	@RequestMapping("/aliens")
 	@ResponseBody
-	public String getAliens() {
-		return repo.findAll().toString();
+	public List<Alien> getAliens() {
+		return repo.findAll();
 	}
 
 	@RequestMapping("/alien/{aid}")
 	@ResponseBody
-	public String getAlien2(@PathVariable("aid") int aid) {
-		return repo.findById(aid).toString();
+	public Optional<Alien> getAlien2(@PathVariable("aid") int aid) {
+		return repo.findById(aid);
 	}
 }
